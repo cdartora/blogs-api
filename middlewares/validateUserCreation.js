@@ -30,7 +30,7 @@ const userCreation = (req, res, next) => {
     const message = {
       message: error.details[0].message,
     };
-    res.status(400).send(message);
+    return res.status(400).send(message);
   }
   next();
 };
@@ -55,7 +55,7 @@ const userLogin = (req, res, next) => {
     const message = {
       message: error.details[0].message,
     };
-    res.status(400).send(message);
+    return res.status(400).send(message);
   }
   
   next();

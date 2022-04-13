@@ -18,7 +18,6 @@ const getUser = async (id) => {
   return user.dataValues;
 };
 
-getUser(3);
 const authenticateUser = async (email, password) => {
   const user = await User.findOne({ where: { email, password } });
   if (!user.dataValues) throw new Error('User doesn\'t exists.');
