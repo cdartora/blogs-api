@@ -10,6 +10,15 @@ const create = async (displayName, email, password, image) => {
   return dataValues;
 };
 
+const getAll = async () => User.findAll();
+
+const getUser = async (id) => {
+  const user = await User.findByPk(id);
+  if (!user) throw new Error('User doesn\'t exists');
+  return user.dataValues;
+};
+
+getUser(3);
 const authenticateUser = async (email, password) => {
   const user = await User.findOne({ where: { email, password } });
   if (!user.dataValues) throw new Error('User doesn\'t exists.');
@@ -19,4 +28,6 @@ const authenticateUser = async (email, password) => {
 module.exports = {
   create,
   authenticateUser,
+  getAll,
+  getUser,
 };

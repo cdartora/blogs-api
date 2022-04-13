@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../models');
 const services = require('../services/users');
 require('dotenv').config();
 
@@ -45,10 +44,21 @@ const login = async (req, res) => {
 
 const getAll = async (req, res) => {
   try {
-    const allUsers = await User.findAll();
+    const allUsers = await services.getAll();
     res.status(200).send(allUsers);
   } catch (err) {
     res.status(500).send({ message: 'Somethin went wrong on the db.' });
+  }
+};
+
+const getById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const user = await services.getUser(id);
+    res.status(200).send(user);
+  } catch (err) {
+    res.status(404).send({ message: 'User does not exist' });
   }
 };
 
@@ -56,4 +66,5 @@ module.exports = {
   create,
   login,
   getAll,
+  getById,
 };
