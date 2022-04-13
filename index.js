@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 const validate = require('./middlewares/validateUserCreation');
 const user = require('./controllers/users');
+const category = require('./controllers/categories');
 const validateJWT = require('./auth/validateJWT');
 
 const app = express();
@@ -14,6 +15,7 @@ app.post('/user', validate.userCreation, user.create);
 app.post('/login', validate.userLogin, user.login);
 app.get('/user', validateJWT, user.getAll);
 app.get('/user/:id', validateJWT, user.getById);
+app.post('/categories', validateJWT, category.create);
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (request, response) => {
