@@ -61,7 +61,34 @@ const userLogin = (req, res, next) => {
   next();
 };
 
+const postSchema = Joi.object({
+  title: Joi.string()
+    .required(),
+  content: Joi.string()
+    .required(),
+  categoryIds: Joi.array()
+    .required(),
+});
+
+const postCreation = (req, res, next) => {
+  const { title, content, categoryIds } = req.body;
+
+  const { error } = postSchema.validate({
+    title, content, categoryIds,
+  });
+
+  if (error) {
+    const message = {
+      message: error.details[0].message,
+    };
+    return res.status(400).send(message);
+  }
+  
+  next();
+};
+
 module.exports = {
   userCreation,
   userLogin,
+  postCreation,
 };
