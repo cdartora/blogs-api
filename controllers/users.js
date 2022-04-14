@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const services = require('../services/users');
 require('dotenv').config();
 
-const secret = process.env.SECRET;
+const secret = process.env.JWT_SECRET;
 
 const create = async (req, res) => {
   const { displayName, email, password, image } = req.body;
