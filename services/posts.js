@@ -1,4 +1,4 @@
-const { BlogPost, Category } = require('../models');
+const { BlogPost, Category, User } = require('../models');
 
 const create = async (userId, title, content, categoryIds) => {
   const promises = categoryIds.map((id) => Category.findOne({ where: { id } }));
@@ -21,6 +21,53 @@ const create = async (userId, title, content, categoryIds) => {
   return newPost.dataValues;
 };
 
+const getAll = async () => {
+  const posts = await BlogPost.findAll({
+    include: [{
+      model: User,
+      as: 'user',
+    }, {
+      model: Category,
+      as: 'categories',
+      attributes: { include: ['id', 'name'], exclude: ['PostCategory'] },
+    }],
+  });
+
+  // https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+  return posts.map((post) => post.get({ plain: true }));
+};
+
+const getPost = async (id) => {
+  const post = await BlogPost.findOne({
+    where: { id },
+    include: [{
+      model: User,
+      as: 'user',
+    }, {
+      model: Category,
+      as: 'categories',
+      attributes: { include: ['id', 'name'], exclude: ['PostCategory'] },
+    }],
+  });
+
+  if (!post) throw new Error('Post doesn\'t exist');
+
+  // https://stackoverflow.com/questions/46380563/get-only-datavalues-from-sequelize-orm
+  return post.get({ plain: true });
+};
+
+const update = async (id, title, content) => {
+  await BlogPost.update(
+    { title, content },
+    {
+      where: { id },
+    },
+  );
+};
+
 module.exports = {
   create,
+  getAll,
+  getPost,
+  update,
 };
