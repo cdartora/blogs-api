@@ -30,8 +30,30 @@ const getPost = async (req, res) => {
   }
 };
 
+const update = async (req, res) => {
+  const { title, content, categoryIds } = req.body;
+  const { id } = req.params;
+  const { id: loggedUserId } = req.user;
+
+  if (categoryIds) return res.status(400).send({ message: 'Categories cannot be edited' });
+
+  try {
+    await services.update(id, title, content);
+    const post = await services.getPost(id);
+    console.log(post);
+    console.log(loggedUserId);
+    if (post.userId !== loggedUserId) {
+      return res.status(401).send({ message: 'Unauthorized user' }); 
+    } 
+    return res.status(200).send(post);
+  } catch (err) {
+    return res.status(500).send({ message: 'Something went wrong' });
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getPost,
+  update,
 };
