@@ -1,5 +1,8 @@
 const services = require('../services/posts');
 
+const POST_MESSAGE = 'Post does not exist';
+const USER_MESSAGE = 'Unauthorized user';
+
 const create = async (req, res) => {
   const { title, content, categoryIds } = req.body;
   const { id } = req.user;
@@ -40,8 +43,6 @@ const update = async (req, res) => {
   try {
     await services.update(id, title, content);
     const post = await services.getPost(id);
-    console.log(post);
-    console.log(loggedUserId);
     if (post.userId !== loggedUserId) {
       return res.status(401).send({ message: 'Unauthorized user' }); 
     } 
@@ -51,9 +52,23 @@ const update = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+const { id } = req.params;
+const { id: userId } = req.user;
+
+try {
+  await services.destroy(id, userId);
+  return res.status(204).send();
+} catch (err) {
+  if (err.message === POST_MESSAGE) return res.status(404).send({ message: POST_MESSAGE });
+  if (err.message === USER_MESSAGE) return res.status(401).send({ message: USER_MESSAGE });
+}
+};
+
 module.exports = {
   create,
   getAll,
   getPost,
   update,
+  destroy,
 };

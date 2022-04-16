@@ -10,6 +10,7 @@ module.exports = {
            model: 'BlogPosts',
            key: 'id',
          },
+         onDelete: 'CASCADE',
        },
        categoryId: {
         type: Sequelize.INTEGER,
