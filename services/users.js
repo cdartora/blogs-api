@@ -24,9 +24,14 @@ const authenticateUser = async (email, password) => {
   return user.dataValues;
 };
 
+const destroy = async (id) => {
+  await User.destroy({ where: { id } });
+};
+
 module.exports = {
   create,
   authenticateUser,
   getAll,
   getUser,
+  destroy,
 };

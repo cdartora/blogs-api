@@ -62,9 +62,21 @@ const getById = async (req, res) => {
   }
 };
 
+const destroy = async (req, res) => {
+  const { id } = req.user;
+  try {
+    await services.destroy(id);
+    res.status(204).send();
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ message: 'Something went wrong' });
+  }
+};
+
 module.exports = {
   create,
   login,
   getAll,
   getById,
+  destroy, 
 };
