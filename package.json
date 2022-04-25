@@ -24,6 +24,7 @@
     "db-reset": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate --debug && npx sequelize db:seed:all"
   },
   "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "6.8.0",
     "eslint-config-airbnb-base": "14.2.0",
     "eslint-plugin-import": "2.22.1",
@@ -32,5 +33,10 @@
     "nodemon": "^2.0.15",
     "sequelize-cli": "6.2.0",
     "supertest": "4.0.2"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
